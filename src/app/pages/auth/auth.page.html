@@ -9,7 +9,7 @@
         icon="mail-outline"
         [control]="form.controls.email"
         type="email"
-        label="Correo"
+        label="Email"
       ></app-custom-input>
 
       <div class="validators" *ngIf="form.controls.email.errors && form.controls.email.touched"> 
@@ -21,7 +21,7 @@
         icon="lock-closed-outline"
         [control]="form.controls.password"
         type="password"
-        label="Cntra Senha"
+        label="Senha"
       ></app-custom-input>
 
       <div class="validators" *ngIf="form.controls.password.errors && form.controls.password.touched"> 
@@ -36,6 +36,7 @@
         Registrar
         <ion-icon slot="end" name="person-add-outline"></ion-icon>
       </ion-button> 
+
     </form>
   </div>
  
