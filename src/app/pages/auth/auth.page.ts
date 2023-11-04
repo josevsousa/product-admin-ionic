@@ -34,7 +34,7 @@ export class AuthPage implements OnInit {
       const loading = await this.utilsSvc.loading();
       await loading.present();
 
-      this.firebaseSvc.sigIn(this.form.value as User)
+      this.firebaseSvc.signIn(this.form.value as User)
       .then( res => {
         console.log(res)
       })

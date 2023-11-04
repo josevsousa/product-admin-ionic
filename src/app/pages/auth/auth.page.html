@@ -4,6 +4,8 @@
   <div class="d-flex-center">
     <form [formGroup]="form"  class="auth-form" (ngSubmit)="submit()" (keypress.enter)="submit()">
       <app-logo></app-logo>
+
+      <!-- ===== Email ===== -->
       <app-custom-input
         autocomplete="email"
         icon="mail-outline"
@@ -17,6 +19,8 @@
         <div *ngIf="form.controls.email.errors?.['email']">Entre com um email valido</div>
       </div>
 
+      
+      <!-- ===== password ===== -->
       <app-custom-input
         icon="lock-closed-outline"
         [control]="form.controls.password"
