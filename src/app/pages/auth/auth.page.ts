@@ -22,13 +22,6 @@ export class AuthPage implements OnInit {
   ngOnInit() {
   }
 
-  //  submit(){
-  //   if (this.form.valid){
-  //     this.firebaseSvc.sigIn(this.form.value as User).then( res => {
-  //       console.log(res)
-  //     })
-  //   }
-  // }
   async submit(){
     if (this.form.valid){
       const loading = await this.utilsSvc.loading();
@@ -36,7 +29,46 @@ export class AuthPage implements OnInit {
 
       this.firebaseSvc.signIn(this.form.value as User)
       .then( res => {
-        console.log(res)
+        this.getUserInfo(res.user.uid);
+      })
+      .catch(error => 
+        this.utilsSvc.presentToast({
+          message: error.message,
+          duration: 2500,
+          color: 'primary',
+          position: 'middle',
+          icon: 'alert-circle-outline'
+        })
+      )
+      .finally(()=>{
+        loading.dismiss();
+      })
+    }
+  }
+
+  
+  async getUserInfo(uid: string){
+    if (this.form.valid){
+      const loading = await this.utilsSvc.loading();
+      await loading.present();
+
+      let path = `users/${uid}`;
+
+      this.firebaseSvc.getDocument(path)
+      .then((user: User) => {
+        // guardar no localstoreage
+        this.utilsSvc.saveinLocalStorage('user',user);
+        this.utilsSvc.routerLink('/main/home');
+        this.form.reset();
+
+        this.utilsSvc.presentToast({
+          message: `Seja benvindo ${user.name}`,
+          duration: 1500,
+          color: 'primary',
+          position: 'middle',
+          icon: 'person-circle-outline'
+        })
+
       })
       .catch(error => 
         this.utilsSvc.presentToast({
