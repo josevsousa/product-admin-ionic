@@ -45,7 +45,7 @@ export class SignUpPage implements OnInit {
           color: 'primary',
           position: 'middle',
           icon: 'alert-circle-outline'
-        })
+         })
       )
       .finally(()=>{
         loading.dismiss();

@@ -14,37 +14,30 @@ export class FirebaseService {
   auth = inject(AngularFireAuth);
   firestore = inject(AngularFirestore);
 
-  // =============== Autenticaction ================
-
-
+  // =============== AUTH ================
   // ====== Conectar ====
   signIn(user: User) {
     return signInWithEmailAndPassword(getAuth(), user.email, user.password)
   }
-
   // ====== criar usuario ====
   signUp(user: User) {
     return createUserWithEmailAndPassword(getAuth(), user.email, user.password)
   }
-
   // ====== Atualizar usuario ====
   updateUser(displayName: string) {
     return updateProfile(getAuth().currentUser, { displayName })
   }
-
   // ====== Enviar email para restabelecer nova senha ====
   sendRecoveryEmail(email: string) {
     return sendPasswordResetEmail(getAuth(), email);
   }
 
 
-  // =============== Base de Dados ================
-
+  // =============== BASE DE DADOS ================
   // ==== Setar um documento ====
   setDocument(path: string, data: any) {
     return setDoc(doc(getFirestore(), path), data);
   }
-
   // ==== Obter um documento ====
   async getDocument(path: string) {
     return (await getDoc(doc(getFirestore(), path))).data();
