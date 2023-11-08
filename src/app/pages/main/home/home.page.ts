@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilsService } from 'src/app/services/utils.service';
+import { AddUdateProductComponent } from 'src/app/shared/components/add-udate-product/add-udate-product.component';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +11,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePage implements OnInit {
 
-  constructor() { }
+  firebaseSvc = inject(FirebaseService);
+  utilSvc = inject(UtilsService);
+
 
   ngOnInit() {
   }
 
+  signOut(){
+    this.firebaseSvc.logOut();
+  }
+
+  // ===== Agragar o actualizardor de produto =====
+  addUpdateProduct(){
+    this.utilSvc.presentModal({
+      component: AddUdateProductComponent,
+      cssClass: 'add-update-modal'
+    })
+  }
+ 
 }

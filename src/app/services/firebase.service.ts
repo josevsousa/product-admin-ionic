@@ -5,6 +5,7 @@ import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, up
 import { User } from '../models/user.models';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { getFirestore, setDoc, getDoc, doc } from '@angular/fire/firestore';
+import { UtilsService } from './utils.service'
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class FirebaseService {
 
   auth = inject(AngularFireAuth);
   firestore = inject(AngularFirestore);
+  utilsSvc = inject(UtilsService);
 
   // =============== AUTH ================
 
@@ -35,6 +37,12 @@ export class FirebaseService {
   // ====== Enviar email para restabelecer nova senha ====
   sendRecoveryEmail(email: string) {
     return sendPasswordResetEmail(getAuth(), email);
+  }
+  // ====== Logolt ======
+  logOut(){
+    getAuth().signOut();
+    localStorage.removeItem('user');
+    this.utilsSvc.routerLink('/auth')
   }
 
 
