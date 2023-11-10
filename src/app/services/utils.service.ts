@@ -23,6 +23,7 @@ export class UtilsService {
     toast.present();
   }
 
+  // ============ Modal =============
   async presentModal(opts: ModalOptions) {
     const modal = await this.modalCtrl.create(opts);
     await modal.present();
