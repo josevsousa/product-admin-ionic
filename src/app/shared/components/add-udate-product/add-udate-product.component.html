@@ -6,23 +6,54 @@
   <div class="d-flex-center">
     <form [formGroup]="form" class="auth-form ion-padding ion-text-center" (ngSubmit)="submit()" (keypress.enter)="submit()">
     
+      <ion-avatar *ngIf="form.value.image">
+        <img [src]="form.value.image" />
+      </ion-avatar>
+
+      <!-- ========== Tirar ou selecionar imagem ============== -->
+      <ion-button (click)="takeImage()" size="small" mode="ios" shape="round">
+        Tirar ou Selecionar
+      </ion-button>
+
+
       <!-- ======== Name ======= -->
       <app-custom-input 
         autocomplete="name" 
         [control]="form.controls.name" 
         type="text"
         label="name"></app-custom-input>
-
       <div class="validators" *ngIf="form.controls.name.errors && form.controls.name.touched">
-        <div *ngIf="form.controls.name.errors?.['required']">Um name é requerido!</div>
+        <div *ngIf="form.controls.name.errors?.['required']">Um campo é requerido!</div>
         <div *ngIf="form.controls.name.errors?.['minLenght']">Nome tem que ter mais de 4 caracter.</div>
+      </div>
+
+
+      <!-- ======== Price ======= -->
+      <app-custom-input 
+        [control]="form.controls.price" 
+        type="number"
+        label="price"></app-custom-input>
+      <div class="validators" *ngIf="form.controls.price.errors && form.controls.price.touched">
+        <div *ngIf="form.controls.price.errors?.['required']">Um campo é requerido!</div>
+        <div *ngIf="form.controls.price.errors?.['minLenght']">Preço minimo é 0.</div>
+      </div>
+      
+      
+      <!-- ======== Price ======= -->
+      <app-custom-input 
+        [control]="form.controls.solUnits" 
+        type="number"
+        label="Unidades Vendidas"></app-custom-input>
+      <div class="validators" *ngIf="form.controls.solUnits.errors && form.controls.solUnits.touched">
+        <div *ngIf="form.controls.solUnits.errors?.['required']">Um campo é requerido!</div>
+        <div *ngIf="form.controls.solUnits.errors?.['minLenght']">Qtd minimo é 0.</div>
       </div>
 
       <ion-button mode="ios" class="ion-margin" type="submit" [disabled]="form.invalid">
         Add Produto
         <ion-icon slot="end" name="checkmark-circle-outline"></ion-icon>
       </ion-button>
-      
+
     </form>
   </div>
 
