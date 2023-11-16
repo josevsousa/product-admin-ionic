@@ -4,7 +4,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { AddUdateProductComponent } from 'src/app/shared/components/add-udate-product/add-udate-product.component';
 import { User } from 'src/app/models/user.models';
-// import { Product } from 'src/app/models/product.model';
+import { Product } from 'src/app/models/product.model';
 
 @Component({
   selector: 'app-home',
@@ -16,20 +16,20 @@ export class HomePage implements OnInit {
   firebaseSvc = inject(FirebaseService);
   utilSvc = inject(UtilsService);
 
-  // products: Product[] = [];
+  products: Product[] = [];
 
   ngOnInit() {
-    // this.getProdutos()
+    this.getProdutos()
   }
 
   // ===  quando entrar na pagina
   ionViewWillEnter(){
-    // this.getProdutos();
+    this.getProdutos();
   }
 
-  // signOut(){
-  //   this.firebaseSvc.logOut();
-  // }
+  signOut(){
+    this.firebaseSvc.logOut();
+  }
 
   user(): User{
     return this.utilSvc.getFromLocalStorage('user');
@@ -37,12 +37,12 @@ export class HomePage implements OnInit {
 
   // ==== obter produtos ===
   getProdutos(){
-    // let path = `users/${this.user().uid}/products`;
-    // let sub = this.firebaseSvc.getColletionData(path).subscribe({
-    //   next: (resp: any)=>{
-    //     // this.products = resp;
-    //   }
-    // })
+    let path = `users/${this.user().uid}/products`;
+    let sub = this.firebaseSvc.getColletionData(path).subscribe({
+      next: (resp: any)=>{
+        this.products = resp;
+      }
+    })
   }  
 
   // ===== Agragar o actualizardor de produto =====
