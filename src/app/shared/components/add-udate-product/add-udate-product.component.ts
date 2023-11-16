@@ -22,7 +22,10 @@ export class AddUdateProductComponent  implements OnInit {
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
 
+  user = {} as User;
+
   ngOnInit() {
+    this.user = this.utilsSvc.getFromLocalStorage('user');
   }
 
   //=========== Tirar/Selecionar Photo ==========
@@ -33,13 +36,32 @@ export class AddUdateProductComponent  implements OnInit {
 
   async submit(){
     if (this.form.valid){
+
+      let path = `users/${this.user.uid}/products`;
+
       const loading = await this.utilsSvc.loading();
       await loading.present();
 
-      this.firebaseSvc.signUp(this.form.value as User)
+
+      // === Suber imagem e obter a url ====
+      let dataUrl = this.form.value.image;
+      let imagePath = `${this.user.uid}/${Date.now()}`;
+      let imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
+      this.form.controls.image.setValue(imageUrl);
+
+      delete this.form.value.id;
+
+      this.firebaseSvc.addDocument(path, this.form.value)
       .then(async res => {
-        await this.firebaseSvc.updateUser(this.form.value.name);
-        let uid = res.user.uid;
+        this.utilsSvc.dismissModal({ success: true});
+        this.utilsSvc.presentToast({
+          message: 'Produto criado existosament',
+          duration: 1500,
+          color: 'success',
+          position: 'middle',
+          icon: 'checkmark-circle-outline'
+         })
+
       })
       .catch(error => 
         this.utilsSvc.presentToast({

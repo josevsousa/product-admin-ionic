@@ -6,9 +6,15 @@
   <div class="d-flex-center">
     <form [formGroup]="form" class="auth-form ion-padding ion-text-center" (ngSubmit)="submit()" (keypress.enter)="submit()">
     
+      <!-- ========== se existir uma imagem ========== -->
       <ion-avatar *ngIf="form.value.image">
         <img [src]="form.value.image" />
       </ion-avatar>
+
+      
+      <!-- ========== se nao existir uma imagem ========== -->
+      <ion-icon class="image-icon" *ngIf="!form.value.image"  name="image-outline"></ion-icon>
+      <br>
 
       <!-- ========== Tirar ou selecionar imagem ============== -->
       <ion-button (click)="takeImage()" size="small" mode="ios" shape="round">

@@ -4,8 +4,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, } from 'firebase/auth';
 import { User } from '../models/user.models';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { getFirestore, setDoc, getDoc, doc } from '@angular/fire/firestore';
-import { UtilsService } from './utils.service'
+import { getFirestore, setDoc, addDoc, getDoc, doc, collection } from '@angular/fire/firestore';
+import { UtilsService } from './utils.service';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { getStorage, uploadString, ref, getDownloadURL } from 'firebase/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +17,9 @@ export class FirebaseService {
   auth = inject(AngularFireAuth);
   firestore = inject(AngularFirestore);
   utilsSvc = inject(UtilsService);
+  storage = inject(AngularFireStorage);
 
   // =============== AUTH ================
-
   getAuth(){
     return getAuth();
   }
@@ -51,10 +53,24 @@ export class FirebaseService {
   setDocument(path: string, data: any) {
     return setDoc(doc(getFirestore(), path), data);
   }
+  
   // ==== Obter um documento ====
   async getDocument(path: string) {
-    return (await getDoc(doc(getFirestore(), path))).data();
+    return  (await getDoc(doc(getFirestore(), path))).data();
+  }
+  
+  // ==== Agregar um documento ====
+  addDocument(path: string, data: any) {
+    return  addDoc(collection(getFirestore(), path),data);
   }
 
 
+  // =============== upload de image ================
+  async uploadImage(path: string, data_url: string){
+    return uploadString(ref(getStorage(), path), data_url, 'data_url').then(()=>{
+      return getDownloadURL(ref(getStorage(), path))
+    })
+  }
+
+  
 }
