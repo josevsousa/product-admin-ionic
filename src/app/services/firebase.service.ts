@@ -4,7 +4,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, } from 'firebase/auth';
 import { User } from '../models/user.models';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { getFirestore, setDoc, addDoc, getDoc, doc, collection } from '@angular/fire/firestore';
+import { getFirestore, setDoc, addDoc, getDoc, doc, collection, collectionData, query } from '@angular/fire/firestore';
 import { UtilsService } from './utils.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { getStorage, uploadString, ref, getDownloadURL } from 'firebase/storage';
@@ -63,6 +63,13 @@ export class FirebaseService {
   addDocument(path: string, data: any) {
     return  addDoc(collection(getFirestore(), path),data);
   }
+  
+  // ==== Obter documentos de uma coleção ====
+  getColletionData(path: string, collectinQuery?: any){
+    const ref = collection(getFirestore(), path);
+    return collectionData(query(ref, collectinQuery))
+  }
+
 
 
   // =============== upload de image ================
