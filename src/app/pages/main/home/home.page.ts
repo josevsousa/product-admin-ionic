@@ -41,16 +41,20 @@ export class HomePage implements OnInit {
     let sub = this.firebaseSvc.getColletionData(path).subscribe({
       next: (resp: any)=>{
         this.products = resp;
+        
+    console.log("kkkkkkkkkk: "+JSON.stringify(resp))
       }
     })
   }  
 
-  // ===== Agragar o actualizardor de produto =====
-  addUpdateProduct(){
-    this.utilSvc.presentModal({
+  // ===== add e update de produto =====
+  async addUpdateProduct(product?: Product){
+    let success = this.utilSvc.presentModal({
       component: AddUdateProductComponent,
-      cssClass: 'add-update-modal'
+      cssClass: 'add-update-modal',
+      componentProps: { product }
     })
+    if(success) this.getProdutos()
   }
  
 }

@@ -4,7 +4,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, } from 'firebase/auth';
 import { User } from '../models/user.models';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { getFirestore, setDoc, addDoc, getDoc, doc, collection, collectionData, query } from '@angular/fire/firestore';
+import { getFirestore, setDoc, addDoc, getDoc, updateDoc, doc, collection, collectionData, query } from '@angular/fire/firestore';
 import { UtilsService } from './utils.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { getStorage, uploadString, ref, getDownloadURL } from 'firebase/storage';
@@ -54,6 +54,12 @@ export class FirebaseService {
     return setDoc(doc(getFirestore(), path), data);
   }
   
+  // ==== Atualizar um documento ====
+  updateDocument(path: string, data: any) {
+    return updateDoc(doc(getFirestore(), path), data);
+  }
+  
+
   // ==== Obter um documento ====
   async getDocument(path: string) {
     return  (await getDoc(doc(getFirestore(), path))).data();
@@ -67,7 +73,7 @@ export class FirebaseService {
   // ==== Obter documentos de uma coleção ====
   getColletionData(path: string, collectinQuery?: any){
     const ref = collection(getFirestore(), path);
-    return collectionData(query(ref, collectinQuery))
+    return collectionData(query(ref, collectinQuery), {idField: 'id'});
   }
 
 
@@ -78,6 +84,9 @@ export class FirebaseService {
       return getDownloadURL(ref(getStorage(), path))
     })
   }
-
+  // =============== Obter rota da image com sua url ================
+  async getFilePath(url: string){
+    return ref(getStorage(), url).fullPath
+  }
   
 }
