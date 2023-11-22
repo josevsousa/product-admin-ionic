@@ -7,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainPage implements OnInit {
 
-  constructor() { }
+  constructor() {
+    console.log("ok")
+   }
 
   ngOnInit() {
     console.log("to no main")

@@ -6,6 +6,7 @@ import { AddUdateProductComponent } from 'src/app/shared/components/add-udate-pr
 import { User } from 'src/app/models/user.models';
 import { Product } from 'src/app/models/product.model';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -56,5 +57,62 @@ export class HomePage implements OnInit {
     })
     if(success) this.getProdutos()
   }
+
+
+  // ==== Confirmar Delete ====
+  confirmDeleteInspection(product: Product){
+    this.utilSvc.presentAlert({
+      header: 'Deletar Produto',
+      message: 'Desesa mesmo deletar?',
+      buttons: [
+        {text: 'Cancelar'},
+        {
+          text: 'Sim Deletar',
+          handler: ()=>{
+            this.deletarProduct(product);
+          }
+        }
+      ]
+    })
+  }
+
+
+   // ==== deletar Produto ====
+   async deletarProduct(product: Product){
+    
+    let path = `users/${this.user().uid}/products/${product.id}`;
+
+    const loading = await this.utilSvc.loading();
+    await loading.present();
+
+    // ====== deletar img ======
+    let imagePath = await this.firebaseSvc.getFilePath(product.image);
+    await this.firebaseSvc.deletarFile(imagePath);
+
+    this.firebaseSvc.deletarDocument(path)
+    .then(async res => {
+      this.utilSvc.presentToast({
+        message: 'Produto Deletado existosament',
+        duration: 1500,
+        color: 'success',
+        position: 'middle',
+        icon: 'checkmark-circle-outline'
+       })
+
+    })
+    .catch(error => 
+      this.utilSvc.presentToast({
+        message: error.message,
+        duration: 2500,
+        color: 'primary',
+        position: 'middle',
+        icon: 'alert-circle-outline'
+       })
+    )
+    .finally(()=>{
+      loading.dismiss();
+    })
+
+}
  
 }
